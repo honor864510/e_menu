@@ -12,9 +12,16 @@ class MealCategoryModel {
 
   factory MealCategoryModel.fromJson(Map<String, dynamic> json) => _$MealCategoryModelFromJson(json);
 
+  @JsonKey(name: 'id')
   final String id;
+
+  @JsonKey(name: 'name')
   final String name;
+
+  @JsonKey(name: 'description')
   final String? description;
+
+  @JsonKey(name: 'imageUrl')
   final String? imageUrl;
 
   Map<String, dynamic> toJson() => _$MealCategoryModelToJson(this);

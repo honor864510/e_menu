@@ -8,14 +8,14 @@ part of 'meal_model.dart';
 
 MealModel _$MealModelFromJson(Map<String, dynamic> json) => MealModel(
   id: json['id'] as String,
-  name: json['name'] as String,
-  description: json['description'] as String,
-  price: (json['price'] as num).toDouble(),
+  name: json['name'] as String? ?? '',
+  description: json['description'] as String? ?? '',
+  price: (json['price'] as num?)?.toDouble() ?? 0.0,
+  imageUrl: json['image'] as String? ?? '',
   imageUrls:
-      (json['imageUrls'] as List<dynamic>).map((e) => e as String).toList(),
-  category: MealCategoryModel.fromJson(
-    json['category'] as Map<String, dynamic>,
-  ),
+      (json['images'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+      const [],
+  categoryId: json['category'] as String?,
   available: json['available'] as bool? ?? true,
 );
 
@@ -24,7 +24,8 @@ Map<String, dynamic> _$MealModelToJson(MealModel instance) => <String, dynamic>{
   'name': instance.name,
   'description': instance.description,
   'price': instance.price,
-  'imageUrls': instance.imageUrls,
-  'category': instance.category,
+  'image': instance.imageUrl,
+  'images': instance.imageUrls,
+  'category': instance.categoryId,
   'available': instance.available,
 };

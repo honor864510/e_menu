@@ -77,7 +77,7 @@ class MealMenuController extends ChangeNotifier {
 
   /// Gets meals by category ID
   List<MealModel> getMealsByCategory(String categoryId) =>
-      _meals.where((meal) => meal.category.id == categoryId).toList();
+      _meals.where((meal) => meal.categoryId == categoryId).toList();
 
   /// Gets a meal by its ID
   MealModel? getMealById(String id) => _meals.firstWhereOrNull((meal) => meal.id == id);

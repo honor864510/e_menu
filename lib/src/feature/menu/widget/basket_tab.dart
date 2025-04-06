@@ -1,11 +1,11 @@
 import 'package:flutter/widgets.dart';
 
-/// {@template meal_screen}
-/// MealScreen widget.
+/// {@template basket_tab}
+/// BasketTab widget.
 /// {@endtemplate}
-class MealScreen extends StatelessWidget {
-  /// {@macro meal_screen}
-  const MealScreen({
+class BasketTab extends StatelessWidget {
+  /// {@macro basket_tab}
+  const BasketTab({
     super.key, // ignore: unused_element
   });
 

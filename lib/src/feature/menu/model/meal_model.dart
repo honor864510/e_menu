@@ -1,4 +1,3 @@
-import 'package:e_menu/src/feature/menu/model/meal_category_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
@@ -11,22 +10,39 @@ typedef MealID = String;
 class MealModel {
   const MealModel({
     required this.id,
-    required this.name,
-    required this.description,
-    required this.price,
-    required this.imageUrls,
-    required this.category,
+    this.name = '',
+    this.description = '',
+    this.price = 0.0,
+    this.imageUrl = '',
+    this.imageUrls = const [],
+    this.categoryId,
     this.available = true,
   });
 
   factory MealModel.fromJson(Map<String, dynamic> json) => _$MealModelFromJson(json);
 
+  @JsonKey(name: 'id')
   final MealID id;
+
+  @JsonKey(name: 'name')
   final String name;
+
+  @JsonKey(name: 'description')
   final String description;
+
+  @JsonKey(name: 'price')
   final double price;
+
+  @JsonKey(name: 'image')
+  final String imageUrl;
+
+  @JsonKey(name: 'images')
   final List<String> imageUrls;
-  final MealCategoryModel category;
+
+  @JsonKey(name: 'category')
+  final String? categoryId;
+
+  @JsonKey(name: 'available')
   final bool available;
 
   Map<String, dynamic> toJson() => _$MealModelToJson(this);
@@ -36,16 +52,18 @@ class MealModel {
     String? name,
     String? description,
     double? price,
+    String? imageUrl,
     List<String>? imageUrls,
-    MealCategoryModel? category,
+    String? categoryId,
     bool? available,
   }) => MealModel(
     id: id ?? this.id,
     name: name ?? this.name,
     description: description ?? this.description,
     price: price ?? this.price,
+    imageUrl: imageUrl ?? this.imageUrl,
     imageUrls: imageUrls ?? this.imageUrls,
-    category: category ?? this.category,
+    categoryId: categoryId ?? this.categoryId,
     available: available ?? this.available,
   );
 
@@ -61,11 +79,12 @@ class MealModel {
         other.name == name &&
         other.description == description &&
         other.price == price &&
+        other.imageUrl == imageUrl &&
         other.imageUrls == imageUrls &&
-        other.category == category &&
+        other.categoryId == categoryId &&
         other.available == available;
   }
 
   @override
-  int get hashCode => Object.hashAll([id, name, description, price, imageUrls, category, available]);
+  int get hashCode => Object.hashAll([id, name, description, price, imageUrl, imageUrls, categoryId, available]);
 }

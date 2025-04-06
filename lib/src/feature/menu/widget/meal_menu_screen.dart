@@ -1,8 +1,12 @@
 import 'package:e_menu/src/common/model/dependencies.dart';
 import 'package:e_menu/src/common/widget/controller_scope.dart';
 import 'package:e_menu/src/feature/menu/controller/meal_menu_controller.dart';
-import 'package:e_menu/src/feature/menu/widget/meal_menu_scope.dart';
-import 'package:flutter/widgets.dart';
+import 'package:e_menu/src/feature/menu/widget/basket_tab.dart';
+import 'package:e_menu/src/feature/menu/widget/catalog_tab.dart';
+import 'package:flutter/material.dart';
+import 'package:octopus/octopus.dart';
+
+part '__meal_menu_screen.dart';
 
 /// {@template menu_screen}
 /// MealMenuScreen widget.
@@ -21,12 +25,7 @@ class MealMenuScreen extends StatelessWidget {
 
     return ControllerScope(
       controller: MealMenuController(mealRepository: mealRepository, categoryRepository: mealCategoryRepository),
-      child: MealMenuScope(child: _Screen()),
+      child: _MealMenuScreen(),
     );
   }
-}
-
-class _Screen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) => const Placeholder();
 }

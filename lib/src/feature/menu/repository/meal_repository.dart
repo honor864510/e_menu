@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:e_menu/src/common/directus_client/directus_client.dart';
 import 'package:e_menu/src/feature/menu/model/meal_model.dart';
 import 'package:meta/meta.dart';
@@ -23,11 +22,11 @@ class MealRepository implements IMealRepository {
 
   @override
   Future<List<MealModel>> fetch() async {
-    final response = await _directusClient.dio.get<Response<Map<String, List<Map<String, dynamic>>>>>(
+    final response = await _directusClient.dio.get<Map<String, dynamic>>(
       '${_directusClient.url}/items/${MealModel.collectionName}',
     );
 
-    final data = response.data?.data?['data'];
+    final data = (response.data?['data'] as List?)?.cast<Map<String, dynamic>>();
     if (data == null) {
       Error.throwWithStackTrace(Exception('Data is not valid'), StackTrace.current);
     }

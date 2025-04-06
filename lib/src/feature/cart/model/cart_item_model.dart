@@ -11,9 +11,16 @@ class CartItemModel {
 
   factory CartItemModel.fromJson(Map<String, dynamic> json) => _$CartItemModelFromJson(json);
 
+  @JsonKey(name: 'id')
   final String id;
+
+  @JsonKey(name: 'meal')
   final MealModel meal;
+
+  @JsonKey(name: 'quantity')
   final int quantity;
+
+  @JsonKey(name: 'note')
   final String? note;
 
   Map<String, dynamic> toJson() => _$CartItemModelToJson(this);
