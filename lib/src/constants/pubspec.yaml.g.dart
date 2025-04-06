@@ -127,10 +127,10 @@ sealed class Pubspec {
     4,
     6,
     3,
-    9,
-    48,
-    741,
-    45,
+    58,
+    0,
+    422,
+    529,
   );
 
   /// Name
@@ -414,6 +414,8 @@ sealed class Pubspec {
     },
     'intl': r'^0.19.0',
     'octopus': r'^0.0.9',
+    'dio': r'^5.8.0+1',
+    'json_annotation': r'^4.9.0',
     'shared_preferences': r'^2.5.3',
     'cupertino_icons': r'^1.0.8',
     'platform_info': r'^5.0.0',
@@ -429,6 +431,7 @@ sealed class Pubspec {
     'flutter_lints': r'^5.0.0',
     'build_runner': r'^2.4.15',
     'pubspec_generator': r'^4.0.0',
+    'json_serializable': r'^6.9.4',
   };
 
   /// Dependency overrides

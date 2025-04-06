@@ -20,6 +20,7 @@ dependencies:
 
   # Data
   dio: ^5.8.0+1
+  json_annotation: ^4.9.0
   shared_preferences: ^2.5.3
 
   # UI
@@ -38,6 +39,7 @@ dev_dependencies:
   # Code generation
   build_runner: ^2.4.15
   pubspec_generator: ^4.0.0
+  json_serializable: ^6.9.4
 
 flutter:
   uses-material-design: true
