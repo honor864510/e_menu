@@ -1,4 +1,3 @@
-import 'package:e_menu/src/common/model/dependencies.dart';
 import 'package:e_menu/src/feature/menu/model/meal_model.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +21,7 @@ class MealCard extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
                 child: Image.network(
-                  '${Dependencies.of(context).directusClient.directusUrl}/assets/${meal.imageUrl}',
+                  meal.directusImageUrl(context),
                   fit: BoxFit.cover,
                   errorBuilder: (_, __, ___) => const Center(child: Icon(Icons.image_not_supported, size: 48)),
                 ),
