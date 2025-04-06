@@ -1,5 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:e_menu/src/common/widget/controller_scope.dart';
 import 'package:e_menu/src/feature/menu/controller/meal_menu_controller.dart';
+import 'package:e_menu/src/feature/menu/model/meal_category_model.dart';
 import 'package:e_menu/src/feature/menu/widget/meal_card.dart';
 import 'package:flutter/material.dart';
 
@@ -20,13 +22,18 @@ class _MealsScreenState extends State<MealsScreen> with TickerProviderStateMixin
   late TabController _tabController;
   late final MealMenuController mealMenuController;
 
+  MealCategoryTable? _table;
+  MealCategoryID? categoryID;
+
   @override
   void initState() {
     super.initState();
 
     _tabController = TabController(length: 1, vsync: this);
+    _tabController.addListener(_tabControllerListener);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      mealMenuController.addListener(_mealControllerListener);
       await mealMenuController.refresh();
     });
   }
@@ -42,7 +49,42 @@ class _MealsScreenState extends State<MealsScreen> with TickerProviderStateMixin
   void dispose() {
     super.dispose();
 
-    _tabController.dispose();
+    _tabController
+      ..removeListener(_tabControllerListener)
+      ..dispose();
+
+    mealMenuController.removeListener(_mealControllerListener);
+  }
+
+  void _tabControllerListener() {
+    if (_table == null) return;
+
+    final currentId = _table!.keys.elementAt(_tabController.index).id;
+
+    categoryID ??= currentId;
+
+    if (currentId != categoryID) {
+      categoryID = currentId;
+    }
+  }
+
+  void _mealControllerListener() {
+    _table ??= mealMenuController.mealCategoryTable;
+
+    if (_table != mealMenuController.mealCategoryTable && _table != null) {
+      _table = mealMenuController.mealCategoryTable;
+
+      _tabController
+        ..removeListener(_tabControllerListener)
+        ..dispose();
+
+      _tabController = TabController(
+        length: _table!.length,
+        vsync: this,
+        initialIndex: _table!.keys.toList().indexWhere((e) => e.id == categoryID).abs(),
+      );
+      _tabController.addListener(_tabControllerListener);
+    }
   }
 
   @override
@@ -68,15 +110,20 @@ class _MealsScreenState extends State<MealsScreen> with TickerProviderStateMixin
           children:
               categories
                   .map<Widget>(
-                    (category) => GridView.builder(
-                      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: 250,
-                        crossAxisSpacing: 8,
-                        mainAxisSpacing: 8,
+                    (category) => RefreshIndicator(
+                      onRefresh: () async {
+                        mealMenuController.refresh().ignore();
+                      },
+                      child: GridView.builder(
+                        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 250,
+                          crossAxisSpacing: 8,
+                          mainAxisSpacing: 8,
+                        ),
+                        itemCount: mealCategoryTable[category]?.length ?? 0,
+                        padding: const EdgeInsets.all(8),
+                        itemBuilder: (context, index) => MealCard(meal: mealCategoryTable[category]!.elementAt(index)),
                       ),
-                      itemCount: mealCategoryTable[category]?.length ?? 0,
-                      padding: const EdgeInsets.all(8),
-                      itemBuilder: (context, index) => MealCard(meal: mealCategoryTable[category]!.elementAt(index)),
                     ),
                   )
                   .toList(),
