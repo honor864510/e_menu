@@ -12,7 +12,7 @@ class MealModel {
     required this.name,
     required this.description,
     required this.price,
-    required this.imageUrl,
+    required this.imageUrls,
     required this.category,
     this.available = true,
   });
@@ -23,7 +23,7 @@ class MealModel {
   final String name;
   final String description;
   final double price;
-  final String imageUrl;
+  final List<String> imageUrls;
   final MealCategoryModel category;
   final bool available;
 
@@ -34,7 +34,7 @@ class MealModel {
     String? name,
     String? description,
     double? price,
-    String? imageUrl,
+    List<String>? imageUrls,
     MealCategoryModel? category,
     bool? available,
   }) => MealModel(
@@ -42,7 +42,7 @@ class MealModel {
     name: name ?? this.name,
     description: description ?? this.description,
     price: price ?? this.price,
-    imageUrl: imageUrl ?? this.imageUrl,
+    imageUrls: imageUrls ?? this.imageUrls,
     category: category ?? this.category,
     available: available ?? this.available,
   );
@@ -59,11 +59,11 @@ class MealModel {
         other.name == name &&
         other.description == description &&
         other.price == price &&
-        other.imageUrl == imageUrl &&
+        other.imageUrls == imageUrls &&
         other.category == category &&
         other.available == available;
   }
 
   @override
-  int get hashCode => Object.hashAll([id, name, description, price, imageUrl, category, available]);
+  int get hashCode => Object.hashAll([id, name, description, price, imageUrls, category, available]);
 }

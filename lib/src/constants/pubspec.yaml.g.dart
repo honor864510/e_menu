@@ -126,11 +126,11 @@ sealed class Pubspec {
     2025,
     4,
     6,
-    3,
-    58,
-    0,
-    422,
-    529,
+    4,
+    56,
+    24,
+    760,
+    701,
   );
 
   /// Name
@@ -415,6 +415,7 @@ sealed class Pubspec {
     'intl': r'^0.19.0',
     'octopus': r'^0.0.9',
     'dio': r'^5.8.0+1',
+    'collection': r'^1.19.1',
     'json_annotation': r'^4.9.0',
     'shared_preferences': r'^2.5.3',
     'cupertino_icons': r'^1.0.8',
