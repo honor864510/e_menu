@@ -8,17 +8,9 @@ class MealCard extends StatelessWidget {
   final MealModel meal;
 
   @override
-  Widget build(BuildContext context) {
-    if (!meal.available) {
-      return Container(
-        color: Colors.black54,
-        child: const Center(
-          child: Text('Not Available', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-        ),
-      );
-    }
-
-    return Card(
+  Widget build(BuildContext context) => Opacity(
+    opacity: meal.available ? 1 : 0.5,
+    child: Card(
       elevation: 2,
       child: Column(
         children: [
@@ -62,7 +54,7 @@ class MealCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '\$${meal.price.toStringAsFixed(2)}',
+                        '${meal.price.toStringAsFixed(2)} TMT',
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: Theme.of(context).primaryColor,
@@ -85,6 +77,6 @@ class MealCard extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
 }
