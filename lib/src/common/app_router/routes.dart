@@ -1,9 +1,9 @@
-import 'package:e_menu/src/feature/home/home_screen.dart';
+import 'package:e_menu/src/feature/menu/widget/meal_menu_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:octopus/octopus.dart';
 
 enum Routes with OctopusRoute {
-  home('home', title: 'Home');
+  menu('menu', title: 'Menu');
 
   const Routes(this.name, {this.title});
 
@@ -15,6 +15,6 @@ enum Routes with OctopusRoute {
 
   @override
   Widget builder(BuildContext context, OctopusState state, OctopusNode node) => switch (this) {
-    Routes.home => const HomeScreen(),
+    Routes.menu => const MealMenuScreen(),
   };
 }

@@ -74,7 +74,12 @@ final Map<String, _InitializationStep> _initializationSteps = <String, _Initiali
   'Connect to database': (_) => {},
   'Shrink database': (_) => {},
   'Migrate app from previous version': (_) => {},
-  'API Client': (dependencies) => dependencies.directusClient = DirectusClient(url: 'http://localhost:8055'),
+  'API Client':
+      (dependencies) =>
+          dependencies.directusClient = DirectusClient(
+            directusUrl: 'http://localhost:8055',
+            preferences: dependencies.sharedPreferences,
+          ),
   'Initialize repositories': (dependencies) {
     dependencies
       ..mealRepository = MealRepository(dependencies.directusClient)

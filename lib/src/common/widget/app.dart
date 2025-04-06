@@ -12,7 +12,7 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   final Key builderKey = GlobalKey();
-  final router = Octopus(routes: Routes.values, defaultRoute: Routes.home);
+  final router = Octopus(routes: Routes.values, defaultRoute: Routes.menu);
 
   @override
   Widget build(BuildContext context) => MaterialApp.router(

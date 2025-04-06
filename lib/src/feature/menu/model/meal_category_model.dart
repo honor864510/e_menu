@@ -3,6 +3,8 @@ import 'package:meta/meta.dart';
 
 part 'meal_category_model.g.dart';
 
+typedef MealCategoryID = String;
+
 @JsonSerializable()
 @immutable
 class MealCategoryModel {

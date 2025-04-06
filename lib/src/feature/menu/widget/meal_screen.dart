@@ -1,11 +1,11 @@
 import 'package:flutter/widgets.dart';
 
-/// {@template menu_screen}
-/// MenuScreen widget.
+/// {@template meal_screen}
+/// MealScreen widget.
 /// {@endtemplate}
-class MenuScreen extends StatelessWidget {
-  /// {@macro menu_screen}
-  const MenuScreen({
+class MealScreen extends StatelessWidget {
+  /// {@macro meal_screen}
+  const MealScreen({
     super.key, // ignore: unused_element
   });
 

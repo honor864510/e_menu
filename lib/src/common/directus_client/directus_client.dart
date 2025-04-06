@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// A client for interacting with the Directus API.
 ///
@@ -7,21 +8,24 @@ import 'package:dio/dio.dart';
 class DirectusClient {
   /// Creates a new [DirectusClient] instance.
   ///
-  /// Requires a [url] parameter which specifies the base URL of the Directus API.
+  /// Requires a [directusUrl] parameter which specifies the base URL of the Directus API.
   /// Initializes a new [Dio] instance for HTTP communications.
-  DirectusClient({required this.url}) {
+  DirectusClient({required this.directusUrl, required SharedPreferences preferences}) : _preferences = preferences {
     dio = Dio();
   }
 
+  /// Shared preferences
+  late final SharedPreferences _preferences;
+
   /// The base URL of the Directus API.
-  final String url;
+  final String directusUrl;
+
+  /// Directus url
+  String get url => _preferences.getString(directusUrlKey) ?? directusUrl;
+
+  /// Directus url
+  static const directusUrlKey = 'directus_url';
 
   /// The Dio HTTP client instance used for making API requests.
   late final Dio dio;
-
-  /// Creates a copy of this [DirectusClient] with an optionally new [url].
-  ///
-  /// If [url] is null, the current URL will be used.
-  /// Returns a new [DirectusClient] instance with the specified configuration.
-  DirectusClient copyWith(String? url) => DirectusClient(url: url ?? this.url);
 }

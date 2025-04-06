@@ -4,6 +4,8 @@ import 'package:meta/meta.dart';
 
 part 'meal_model.g.dart';
 
+typedef MealID = String;
+
 @JsonSerializable()
 @immutable
 class MealModel {
@@ -19,7 +21,7 @@ class MealModel {
 
   factory MealModel.fromJson(Map<String, dynamic> json) => _$MealModelFromJson(json);
 
-  final String id;
+  final MealID id;
   final String name;
   final String description;
   final double price;
@@ -30,7 +32,7 @@ class MealModel {
   Map<String, dynamic> toJson() => _$MealModelToJson(this);
 
   MealModel copyWith({
-    String? id,
+    MealID? id,
     String? name,
     String? description,
     double? price,
