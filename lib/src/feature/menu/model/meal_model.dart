@@ -1,5 +1,6 @@
+import 'package:e_menu/src/common/model/dependencies.dart';
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:meta/meta.dart';
 
 part 'meal_model.g.dart';
 
@@ -44,6 +45,9 @@ class MealModel {
 
   @JsonKey(name: 'available')
   final bool available;
+
+  String directusImageUrl(BuildContext context) =>
+      '${Dependencies.of(context).directusClient.directusUrl}/assets/$imageUrl';
 
   Map<String, dynamic> toJson() => _$MealModelToJson(this);
 

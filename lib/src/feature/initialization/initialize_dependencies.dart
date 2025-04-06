@@ -6,6 +6,7 @@ import 'package:e_menu/src/common/model/dependencies.dart';
 import 'package:e_menu/src/common/util/logger.dart';
 import 'package:e_menu/src/common/util/screen_util.dart';
 import 'package:e_menu/src/constants/pubspec.yaml.g.dart';
+import 'package:e_menu/src/feature/menu/controller/meal_menu_controller.dart';
 import 'package:e_menu/src/feature/menu/repository/meal_category_repository.dart';
 import 'package:e_menu/src/feature/menu/repository/meal_repository.dart';
 import 'package:flutter/services.dart';
@@ -85,6 +86,12 @@ final Map<String, _InitializationStep> _initializationSteps = <String, _Initiali
       ..mealRepository = MealRepository(dependencies.directusClient)
       ..mealCategoryRepository = MealCategoryRepository(dependencies.directusClient);
   },
+  'Initialize Controllers':
+      (dependencies) =>
+          dependencies.mealMenuController = MealMenuController(
+            mealRepository: dependencies.mealRepository,
+            categoryRepository: dependencies.mealCategoryRepository,
+          ),
   'Initialize localization': (_) {},
   'Log app initialized': (_) {},
 };
