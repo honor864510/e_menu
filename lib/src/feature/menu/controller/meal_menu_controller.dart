@@ -5,6 +5,8 @@ import 'package:e_menu/src/feature/menu/repository/meal_category_repository.dart
 import 'package:e_menu/src/feature/menu/repository/meal_repository.dart';
 import 'package:flutter/foundation.dart';
 
+typedef MealCategoryTable = Map<MealCategoryModel, List<MealModel>>;
+
 /// Controller for managing both meals and meal categories
 /// Uses [ChangeNotifier] to notify listeners of state changes
 class MealMenuController extends ChangeNotifier {
@@ -22,14 +24,18 @@ class MealMenuController extends ChangeNotifier {
   // Category state
   List<MealCategoryModel> _categories = [];
 
+  MealCategoryTable get mealCategoryTable {
+    final table = <MealCategoryModel, List<MealModel>>{};
+
+    for (final category in _categories) {
+      table[category] = _meals.where((meal) => meal.categoryId == category.id).toList();
+    }
+
+    return table;
+  }
+
   // Common state
   bool _isLoading = false;
-
-  /// Gets the current list of meals
-  List<MealModel> get meals => _meals;
-
-  /// Gets the current list of meal categories
-  List<MealCategoryModel> get categories => _categories;
 
   /// Gets the current loading state
   bool get isLoading => _isLoading;
@@ -44,48 +50,14 @@ class MealMenuController extends ChangeNotifier {
 
       _meals = results[0] as List<MealModel>;
       _categories = results[1] as List<MealCategoryModel>;
-
-      notifyListeners();
     } finally {
       _setLoading(false);
-    }
-  }
-
-  /// Fetches only meals
-  Future<void> fetchMeals() async {
-    _setLoading(true);
-
-    try {
-      _meals = await _mealRepository.fetch();
       notifyListeners();
-    } finally {
-      _setLoading(false);
     }
   }
-
-  /// Fetches only categories
-  Future<void> fetchCategories() async {
-    _setLoading(true);
-
-    try {
-      _categories = await _categoryRepository.fetch();
-      notifyListeners();
-    } finally {
-      _setLoading(false);
-    }
-  }
-
-  /// Gets meals by category ID
-  List<MealModel> getMealsByCategory(String categoryId) =>
-      _meals.where((meal) => meal.categoryId == categoryId).toList()
-        ..sort((a, b) => a.name.compareTo(b.name))
-        ..sort((a, b) => b.available ? 1 : -1);
 
   /// Gets a meal by its ID
   MealModel? getMealById(String id) => _meals.firstWhereOrNull((meal) => meal.id == id);
-
-  /// Gets a category by its ID
-  MealCategoryModel? getCategoryById(String id) => _categories.firstWhereOrNull((category) => category.id == id);
 
   /// Sets the loading state and notifies listeners
   void _setLoading(bool value) {
