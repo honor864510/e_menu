@@ -25,9 +25,7 @@ Future<Dependencies> $initializeApp({
             DeviceOrientation.portraitDown,
           ]); */
         await _catchExceptions();
-        final dependencies = await $initializeDependencies(
-          onProgress: onProgress,
-        ).timeout(const Duration(minutes: 7));
+        final dependencies = await $initializeDependencies(onProgress: onProgress).timeout(const Duration(minutes: 7));
         await onSuccess?.call(dependencies);
         return dependencies;
       } on Object catch (error, stackTrace) {
@@ -56,22 +54,14 @@ Future<void> $disposeApp(Dependencies dependencies) async {}
 Future<void> _catchExceptions() async {
   try {
     PlatformDispatcher.instance.onError = (error, stackTrace) {
-      logger.error(
-        'ROOT ERROR\r\n${Error.safeToString(error)}',
-        error,
-        stackTrace,
-      );
+      logger.error('ROOT ERROR\r\n${Error.safeToString(error)}', error, stackTrace);
 
       return true;
     };
 
     final sourceFlutterError = FlutterError.onError;
     FlutterError.onError = (final details) {
-      logger.error(
-        'FLUTTER ERROR\r\n$details',
-        details.exception,
-        details.stack ?? StackTrace.current,
-      );
+      logger.error('FLUTTER ERROR\r\n$details', details.exception, details.stack ?? StackTrace.current);
       // FlutterError.presentError(details);
       sourceFlutterError?.call(details);
     };
