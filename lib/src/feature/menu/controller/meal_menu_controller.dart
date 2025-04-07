@@ -57,7 +57,7 @@ class MealMenuController extends ChangeNotifier {
   }
 
   /// Gets a meal by its ID
-  MealModel? getMealById(String id) => _meals.firstWhereOrNull((meal) => meal.id == id);
+  Future<MealModel?> fetchMealById(String id) => _mealRepository.fetchById(id);
 
   /// Sets the loading state and notifies listeners
   void _setLoading(bool value) {

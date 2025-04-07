@@ -28,6 +28,7 @@ class MealRepository implements IMealRepository {
   Future<List<MealModel>> fetch() async {
     final response = await _directusClient.dio.get<Map<String, dynamic>>(
       '${_directusClient.url}/items/${MealModel.collectionName}',
+      queryParameters: {'sort': '-available,name'},
     );
 
     final data = (response.data?['data'] as List?)?.cast<Map<String, dynamic>>();
@@ -46,7 +47,7 @@ class MealRepository implements IMealRepository {
         'filter': {
           'category': {'_eq': categoryId},
         },
-        'sort': ['name', '-available'],
+        'sort': '-available,name',
       },
     );
 

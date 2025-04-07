@@ -25,18 +25,18 @@ class CartRepository implements ICartRepository {
     final cartJson = _prefs.getString(_cartKey);
     if (cartJson == null) return [];
 
-    final decodedList = jsonDecode(cartJson) as List<Map<String, dynamic>>;
+    final decodedList = jsonDecode(cartJson) as List<dynamic>;
 
-    return decodedList.map(CartItemModel.fromJson).toList();
+    return decodedList.whereType<Map<String, dynamic>>().map((e) => CartItemModel.fromJson(e)).toList();
   }
 
   @override
   Future<void> addToCart(CartItemModel item) async {
     final items = await getCartItems();
-    final existingIndex = items.indexWhere((i) => i.meal == item.meal);
+    final existingIndex = items.indexWhere((i) => i.meal.id == item.meal.id);
 
     if (existingIndex != -1) {
-      items[existingIndex] = item;
+      items[existingIndex] = item.copyWith(quantity: items[existingIndex].quantity + item.quantity);
     } else {
       items.add(item);
     }
@@ -47,14 +47,14 @@ class CartRepository implements ICartRepository {
   @override
   Future<void> removeFromCart(MealModel meal) async {
     final items = await getCartItems();
-    items.removeWhere((item) => item.meal == meal);
+    items.removeWhere((item) => item.meal.id == meal.id);
     await _saveCart(items);
   }
 
   @override
   Future<void> updateQuantity(MealModel meal, int quantity) async {
     final items = await getCartItems();
-    final index = items.indexWhere((item) => item.meal == meal);
+    final index = items.indexWhere((item) => item.meal.id == meal.id);
 
     if (index != -1) {
       items[index] = items[index].copyWith(quantity: quantity);

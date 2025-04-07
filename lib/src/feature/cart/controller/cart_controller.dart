@@ -21,9 +21,9 @@ class CartController extends ChangeNotifier {
     _setLoading(true);
     try {
       _items = await _cartRepository.getCartItems();
-      notifyListeners();
     } finally {
       _setLoading(false);
+      notifyListeners();
     }
   }
 
@@ -68,7 +68,7 @@ class CartController extends ChangeNotifier {
     try {
       await _cartRepository.clearCart();
       _items = [];
-      notifyListeners();
+      await _refreshCart();
     } finally {
       _setLoading(false);
     }

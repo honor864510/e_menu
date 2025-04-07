@@ -3,6 +3,7 @@ import 'package:e_menu/src/common/widget/controller_scope.dart';
 import 'package:e_menu/src/feature/menu/controller/meal_menu_controller.dart';
 import 'package:e_menu/src/feature/menu/model/meal_category_model.dart';
 import 'package:e_menu/src/feature/menu/widget/meal_card.dart';
+import 'package:e_menu/src/feature/menu/widget/meal_screen.dart';
 import 'package:flutter/material.dart';
 
 /// {@template meals_screen}
@@ -24,12 +25,13 @@ class _MealsScreenState extends State<MealsScreen> with TickerProviderStateMixin
 
   MealCategoryTable? _table;
   MealCategoryID? categoryID;
+  bool isTabControllerReady = true;
 
   @override
   void initState() {
     super.initState();
 
-    _tabController = TabController(length: 1, vsync: this);
+    _tabController = TabController(length: 0, vsync: this);
     _tabController.addListener(_tabControllerListener);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -68,20 +70,36 @@ class _MealsScreenState extends State<MealsScreen> with TickerProviderStateMixin
     }
   }
 
+  static const _equality = DeepCollectionEquality();
+
   void _mealControllerListener() {
+    // Initialize table if null
     _table ??= mealMenuController.mealCategoryTable;
 
-    if (_table != mealMenuController.mealCategoryTable && _table != null) {
-      _table = mealMenuController.mealCategoryTable;
+    // Get the current table from controller
+    final newTable = mealMenuController.mealCategoryTable;
+
+    // Check if tables are different by comparing keys and values
+    final tablesAreDifferent =
+        _table!.length != newTable.length ||
+        _table!.keys.any((key) => !newTable.containsKey(key)) ||
+        _table!.entries.any(
+          (entry) => !newTable.containsKey(entry.key) || !_equality.equals(entry.value, newTable[entry.key]),
+        );
+
+    if (tablesAreDifferent) {
+      _table = newTable;
 
       _tabController
         ..removeListener(_tabControllerListener)
         ..dispose();
 
+      final initialIndex = newTable.keys.toList().indexWhere((e) => e.id == categoryID);
+
       _tabController = TabController(
-        length: _table!.length,
+        length: newTable.keys.length,
         vsync: this,
-        initialIndex: _table!.keys.toList().indexWhere((e) => e.id == categoryID).abs(),
+        initialIndex: initialIndex == -1 ? 0 : initialIndex,
       );
       _tabController.addListener(_tabControllerListener);
     }
@@ -95,7 +113,7 @@ class _MealsScreenState extends State<MealsScreen> with TickerProviderStateMixin
       final mealCategoryTable = mealMenuController.mealCategoryTable;
       final categories = mealCategoryTable.keys;
 
-      if (isLoading) {
+      if (isLoading || !isTabControllerReady) {
         return const Scaffold(body: Center(child: CircularProgressIndicator()));
       }
 
@@ -122,7 +140,21 @@ class _MealsScreenState extends State<MealsScreen> with TickerProviderStateMixin
                         ),
                         itemCount: mealCategoryTable[category]?.length ?? 0,
                         padding: const EdgeInsets.all(8),
-                        itemBuilder: (context, index) => MealCard(meal: mealCategoryTable[category]!.elementAt(index)),
+                        itemBuilder: (context, index) {
+                          final meal = mealCategoryTable[category]!.elementAt(
+                            index,
+                          ); // ignore: prefer_const_constructors_
+
+                          return MealCard(
+                            meal: meal,
+                            onTap:
+                                meal.available
+                                    ? () => Navigator.of(
+                                      context,
+                                    ).push(MaterialPageRoute<void>(builder: (context) => MealScreen(id: meal.id)))
+                                    : null,
+                          );
+                        },
                       ),
                     ),
                   )

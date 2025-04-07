@@ -1,5 +1,7 @@
 import 'package:e_menu/src/common/directus_client/directus_client.dart';
 import 'package:e_menu/src/common/model/app_metadata.dart';
+import 'package:e_menu/src/feature/cart/controller/cart_controller.dart';
+import 'package:e_menu/src/feature/cart/data/cart_repository.dart';
 import 'package:e_menu/src/feature/menu/controller/meal_menu_controller.dart';
 import 'package:e_menu/src/feature/menu/repository/meal_category_repository.dart';
 import 'package:e_menu/src/feature/menu/repository/meal_repository.dart';
@@ -36,8 +38,14 @@ class Dependencies {
   /// Meal Category repository
   late final MealCategoryRepository mealCategoryRepository;
 
+  /// Meal Category repository
+  late final CartRepository cartRepository;
+
   /// Meal menu controller
   late final MealMenuController mealMenuController;
+
+  /// Cart controller
+  late final CartController cartController;
 }
 
 /// {@template inherited_dependencies}

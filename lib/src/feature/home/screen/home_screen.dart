@@ -36,17 +36,18 @@ class _ScreenState extends State<_Screen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    body: AnimatedSwitcher(
-      duration: const Duration(milliseconds: 400),
-      child: () {
-        switch (activeIdx) {
-          case 0:
-            return const MealsScreen();
-          case 1:
-            return const CartScreen();
-        }
-      }(),
-    ),
+    body: IndexedStack(index: activeIdx, children: const [MealsScreen(), CartScreen()]),
+    // body: AnimatedSwitcher(
+    //   duration: const Duration(milliseconds: 400),
+    //   child: () {
+    //     switch (activeIdx) {
+    //       case 0:
+    //         return const MealsScreen();
+    //       case 1:
+    //         return const CartScreen();
+    //     }
+    //   }(),
+    // ),
     bottomNavigationBar: BottomNavigationBar(
       currentIndex: activeIdx,
       onTap:
