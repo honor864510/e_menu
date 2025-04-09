@@ -1,3 +1,4 @@
+import 'package:e_menu/src/common/model/dependencies.dart';
 import 'package:e_menu/src/feature/menu/model/meal_model.dart';
 import 'package:flutter/material.dart';
 
@@ -56,21 +57,49 @@ class MealCard extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          '${meal.price.toStringAsFixed(2)} TMT',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).primaryColor,
+                        Expanded(
+                          child: Text(
+                            '${meal.price.toStringAsFixed(2)} TMT',
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            maxLines: 1,
                           ),
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.add_shopping_cart),
-                          onPressed:
-                              meal.available
-                                  ? () {
-                                    // TODO: Add to cart functionality
-                                  }
-                                  : null,
+                        ListenableBuilder(
+                          listenable: Dependencies.of(context).cartController,
+                          builder: (context, _) {
+                            final controller = Dependencies.of(context).cartController;
+
+                            return AnimatedSwitcher(
+                              duration: Durations.medium1,
+                              child:
+                                  controller.containsMeal(meal)
+                                      ? Row(
+                                        key: ValueKey('${meal.id}__increment_decrement_btns'),
+                                        children: [
+                                          IconButton(
+                                            icon: const Icon(Icons.remove, size: 16),
+                                            onPressed: () => controller.decrementQuantity(meal),
+                                          ),
+                                          ConstrainedBox(
+                                            constraints: const BoxConstraints(minWidth: 16),
+                                            child: Center(child: Text('${controller.getQuantity(meal)}')),
+                                          ),
+                                          IconButton(
+                                            icon: const Icon(Icons.add, size: 16),
+                                            onPressed: () => controller.incrementQuantity(meal),
+                                          ),
+                                        ],
+                                      )
+                                      : IconButton(
+                                        key: ValueKey('${meal.id}__addToCart'),
+                                        icon: const Icon(Icons.add_shopping_cart, size: 16),
+                                        onPressed: meal.available ? () => controller.addToCart(meal) : null,
+                                      ),
+                            );
+                          },
                         ),
                       ],
                     ),

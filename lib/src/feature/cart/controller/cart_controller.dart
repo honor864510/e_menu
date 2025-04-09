@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:e_menu/src/feature/cart/data/cart_repository.dart';
 import 'package:e_menu/src/feature/cart/model/cart_item_model.dart';
 import 'package:e_menu/src/feature/menu/model/meal_model.dart';
@@ -16,6 +17,14 @@ class CartController extends ChangeNotifier {
   double get totalPrice => _items.fold(0, (sum, item) => sum + (item.meal.price * item.quantity));
 
   int get itemCount => _items.length;
+
+  /// Checks if a meal is already in the cart
+  bool containsMeal(MealModel meal) => _items.any((item) => item.meal.id == meal.id);
+
+  int getQuantity(MealModel meal) {
+    final item = _items.firstWhereOrNull((item) => item.meal.id == meal.id);
+    return item?.quantity ?? 0;
+  }
 
   Future<void> loadCart() async {
     _setLoading(true);
@@ -45,6 +54,31 @@ class CartController extends ChangeNotifier {
       await _refreshCart();
     } finally {
       _setLoading(false);
+    }
+  }
+
+  /// Increments the quantity of a meal in the cart by 1
+  Future<void> incrementQuantity(MealModel meal) async {
+    final existingItem = _items.firstWhere(
+      (item) => item.meal.id == meal.id,
+      orElse: () => CartItemModel(id: 'CartItem_${meal.id}', meal: meal, quantity: 0),
+    );
+
+    await updateQuantity(meal, existingItem.quantity + 1);
+  }
+
+  /// Decrements the quantity of a meal in the cart by 1
+  /// If quantity becomes 0, the item is removed from the cart
+  Future<void> decrementQuantity(MealModel meal) async {
+    final existingItem = _items.firstWhere(
+      (item) => item.meal.id == meal.id,
+      orElse: () => CartItemModel(id: 'CartItem_${meal.id}', meal: meal, quantity: 0),
+    );
+
+    if (existingItem.quantity <= 1) {
+      await removeFromCart(meal);
+    } else {
+      await updateQuantity(meal, existingItem.quantity - 1);
     }
   }
 
