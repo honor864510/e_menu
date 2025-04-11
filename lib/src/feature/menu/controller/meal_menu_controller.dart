@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:e_menu/src/feature/menu/model/meal_category_model.dart';
 import 'package:e_menu/src/feature/menu/model/meal_model.dart';
 import 'package:e_menu/src/feature/menu/repository/meal_category_repository.dart';

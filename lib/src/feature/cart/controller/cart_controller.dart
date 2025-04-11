@@ -16,7 +16,7 @@ class CartController extends ChangeNotifier {
 
   double get totalPrice => _items.fold(0, (sum, item) => sum + (item.meal.price * item.quantity));
 
-  int get itemCount => _items.length;
+  int get itemCount => _items.fold(0, (previousValue, element) => previousValue + element.quantity);
 
   /// Checks if a meal is already in the cart
   bool containsMeal(MealModel meal) => _items.any((item) => item.meal.id == meal.id);

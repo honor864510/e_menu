@@ -27,7 +27,7 @@ class CartRepository implements ICartRepository {
 
     final decodedList = jsonDecode(cartJson) as List<dynamic>;
 
-    return decodedList.whereType<Map<String, dynamic>>().map((e) => CartItemModel.fromJson(e)).toList();
+    return decodedList.whereType<Map<String, dynamic>>().map(CartItemModel.fromJson).toList();
   }
 
   @override

@@ -1,5 +1,5 @@
 import 'package:e_menu/src/common/theme/theme.dart';
-import 'package:e_menu/src/feature/home/screen/home_screen.dart';
+import 'package:e_menu/src/feature/menu/widget/meals_screen.dart';
 import 'package:flutter/material.dart';
 
 class App extends StatefulWidget {
@@ -19,7 +19,7 @@ class _AppState extends State<App> {
     darkTheme: AppThemeData.darkTheme(),
 
     // Home screen
-    home: const HomeScreen(),
+    home: const MealsScreen(),
 
     // Builder
     builder:

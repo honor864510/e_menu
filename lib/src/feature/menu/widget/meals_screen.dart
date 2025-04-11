@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
-import 'package:e_menu/src/common/widget/controller_scope.dart';
+import 'package:e_menu/src/common/model/dependencies.dart';
+import 'package:e_menu/src/feature/cart/cart_screen.dart';
 import 'package:e_menu/src/feature/menu/controller/meal_menu_controller.dart';
 import 'package:e_menu/src/feature/menu/model/meal_category_model.dart';
 import 'package:e_menu/src/feature/menu/widget/meal_card.dart';
@@ -44,7 +45,7 @@ class _MealsScreenState extends State<MealsScreen> with TickerProviderStateMixin
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    mealMenuController = ControllerScope.of<MealMenuController>(context);
+    mealMenuController = Dependencies.of(context).mealMenuController;
   }
 
   @override
@@ -123,6 +124,25 @@ class _MealsScreenState extends State<MealsScreen> with TickerProviderStateMixin
 
       return Scaffold(
         appBar: TabBar(controller: _tabController, tabs: categories.map<Widget>((e) => Text(e.name)).toList()),
+        floatingActionButton: ListenableBuilder(
+          listenable: Dependencies.of(context).cartController,
+          builder: (context, child) {
+            final isLoading = mealMenuController.isLoading;
+            final isCartEmpty = Dependencies.of(context).cartController.itemCount == 0;
+
+            if (isLoading || isCartEmpty) return const SizedBox.shrink();
+
+            return FloatingActionButton(
+              onPressed:
+                  () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (context) => const CartScreen())),
+              child: Badge.count(
+                key: ValueKey('CartBadge_${Dependencies.of(context).cartController.itemCount}'),
+                count: Dependencies.of(context).cartController.itemCount,
+                child: const Icon(Icons.shopping_cart),
+              ),
+            );
+          },
+        ),
         body: TabBarView(
           controller: _tabController,
           children:
