@@ -123,7 +123,18 @@ class _MealsScreenState extends State<MealsScreen> with TickerProviderStateMixin
       }
 
       return Scaffold(
-        appBar: TabBar(controller: _tabController, tabs: categories.map<Widget>((e) => Text(e.name)).toList()),
+        appBar: TabBar(
+          controller: _tabController,
+          tabs:
+              categories
+                  .map<Widget>(
+                    (e) => Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Text(e.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+                    ),
+                  )
+                  .toList(),
+        ),
         floatingActionButton: ListenableBuilder(
           listenable: Dependencies.of(context).cartController,
           builder: (context, child) {
