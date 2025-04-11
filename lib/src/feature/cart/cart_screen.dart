@@ -13,6 +13,7 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartController = Dependencies.of(context).cartController;
+    final servicePercentage = Dependencies.of(context).settingsController.settings.servicePercentage;
 
     return Scaffold(
       appBar: AppBar(),
@@ -27,13 +28,12 @@ class CartScreen extends StatelessWidget {
                 (context, _) => Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // TODO add service %
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Услуга ${10}%', style: Theme.of(context).textTheme.titleMedium),
+                        Text('Услуга $servicePercentage%', style: Theme.of(context).textTheme.titleMedium),
                         Text(
-                          '${(cartController.totalPrice * 0.1).toStringAsFixed(2)} TMT',
+                          '${(cartController.totalPrice * (servicePercentage / 100)).toStringAsFixed(2)} TMT',
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ],

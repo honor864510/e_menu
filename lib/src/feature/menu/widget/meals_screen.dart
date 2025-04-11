@@ -37,7 +37,7 @@ class _MealsScreenState extends State<MealsScreen> with TickerProviderStateMixin
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       mealMenuController.addListener(_mealControllerListener);
-      await mealMenuController.refresh();
+      await mealMenuController.refresh(context);
     });
   }
 
@@ -161,7 +161,7 @@ class _MealsScreenState extends State<MealsScreen> with TickerProviderStateMixin
                   .map<Widget>(
                     (category) => RefreshIndicator(
                       onRefresh: () async {
-                        mealMenuController.refresh().ignore();
+                        mealMenuController.refresh(context).ignore();
                       },
                       child: GridView.builder(
                         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(

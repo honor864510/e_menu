@@ -51,7 +51,7 @@ class MealModel {
   final bool available;
 
   String directusImageUrl(BuildContext context) =>
-      '${Dependencies.of(context).directusClient.directusUrl}/assets/$imageUrl';
+      '${Dependencies.of(context).settingsController.settings.directusUrl}/assets/$imageUrl';
 
   Map<String, dynamic> toJson() => _$MealModelToJson(this);
 

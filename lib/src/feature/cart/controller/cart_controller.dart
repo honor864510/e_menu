@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:e_menu/src/feature/cart/data/cart_repository.dart';
 import 'package:e_menu/src/feature/cart/model/cart_item_model.dart';
@@ -5,7 +7,9 @@ import 'package:e_menu/src/feature/menu/model/meal_model.dart';
 import 'package:flutter/foundation.dart';
 
 class CartController extends ChangeNotifier {
-  CartController(this._cartRepository);
+  CartController(this._cartRepository) {
+    unawaited(loadCart());
+  }
 
   final ICartRepository _cartRepository;
   List<CartItemModel> _items = [];

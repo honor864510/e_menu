@@ -27,7 +27,7 @@ class MealScreen extends StatelessWidget {
     final cartController = Dependencies.of(context).cartController;
 
     return FutureBuilder(
-      future: Dependencies.of(context).mealMenuController.fetchMealById(id as String),
+      future: Dependencies.of(context).mealMenuController.fetchMealById(id as String, context: context),
       builder: (context, snapshot) {
         final meal = snapshot.data;
 
