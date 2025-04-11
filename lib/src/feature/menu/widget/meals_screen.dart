@@ -134,7 +134,8 @@ class _MealsScreenState extends State<MealsScreen> with TickerProviderStateMixin
                       },
                       child: GridView.builder(
                         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: 250,
+                          maxCrossAxisExtent: 300,
+                          childAspectRatio: 5 / 7,
                           crossAxisSpacing: 8,
                           mainAxisSpacing: 8,
                         ),

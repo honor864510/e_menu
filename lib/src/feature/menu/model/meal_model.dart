@@ -14,6 +14,7 @@ class MealModel {
     this.name = '',
     this.description = '',
     this.price = 0.0,
+    this.gr = 0.0,
     this.imageUrl = '',
     this.imageUrls = const [],
     this.categoryId,
@@ -33,6 +34,9 @@ class MealModel {
 
   @JsonKey(name: 'price')
   final double price;
+
+  @JsonKey(name: 'gr')
+  final double gr;
 
   @JsonKey(name: 'image')
   final String imageUrl;
@@ -56,6 +60,7 @@ class MealModel {
     String? name,
     String? description,
     double? price,
+    double? gr,
     String? imageUrl,
     List<String>? imageUrls,
     String? categoryId,
@@ -65,6 +70,7 @@ class MealModel {
     name: name ?? this.name,
     description: description ?? this.description,
     price: price ?? this.price,
+    gr: gr ?? this.gr,
     imageUrl: imageUrl ?? this.imageUrl,
     imageUrls: imageUrls ?? this.imageUrls,
     categoryId: categoryId ?? this.categoryId,
@@ -83,6 +89,7 @@ class MealModel {
         other.name == name &&
         other.description == description &&
         other.price == price &&
+        other.gr == gr &&
         other.imageUrl == imageUrl &&
         other.imageUrls == imageUrls &&
         other.categoryId == categoryId &&
@@ -90,5 +97,5 @@ class MealModel {
   }
 
   @override
-  int get hashCode => Object.hashAll([id, name, description, price, imageUrl, imageUrls, categoryId, available]);
+  int get hashCode => Object.hashAll([id, name, description, price, gr, imageUrl, imageUrls, categoryId, available]);
 }

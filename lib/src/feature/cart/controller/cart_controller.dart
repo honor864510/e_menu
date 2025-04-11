@@ -21,7 +21,7 @@ class CartController extends ChangeNotifier {
   /// Checks if a meal is already in the cart
   bool containsMeal(MealModel meal) => _items.any((item) => item.meal.id == meal.id);
 
-  int getQuantity(MealModel meal) {
+  int quantityOf(MealModel meal) {
     final item = _items.firstWhereOrNull((item) => item.meal.id == meal.id);
     return item?.quantity ?? 0;
   }
