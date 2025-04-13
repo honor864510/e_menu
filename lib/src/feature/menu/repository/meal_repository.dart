@@ -1,17 +1,18 @@
 import 'package:e_menu/src/common/directus_client/directus_client.dart';
+import 'package:e_menu/src/common/model/dependencies.dart';
 import 'package:e_menu/src/feature/menu/model/meal_model.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
 
 /// Repository interface for managing meal-related operations
 /// Provides methods to interact with meal data from a data source
 abstract interface class IMealRepository {
   /// Retrieves a list of all available meals from the data source
   /// Returns a Future that resolves to a List of [MealModel] objects
-  Future<List<MealModel>> fetch();
+  Future<List<MealModel>> fetch(BuildContext context);
 
-  Future<List<MealModel>> fetchByCategory(String categoryId);
+  Future<List<MealModel>> fetchByCategory(String categoryId, {required BuildContext context});
 
-  Future<MealModel> fetchById(String id);
+  Future<MealModel> fetchById(String id, {required BuildContext context});
 }
 
 /// Concrete implementation of [IMealRepository] that uses Directus backend
@@ -25,9 +26,9 @@ class MealRepository implements IMealRepository {
   final DirectusClient _directusClient;
 
   @override
-  Future<List<MealModel>> fetch() async {
+  Future<List<MealModel>> fetch(BuildContext context) async {
     final response = await _directusClient.dio.get<Map<String, dynamic>>(
-      '${_directusClient.url}/items/${MealModel.collectionName}',
+      '${Dependencies.of(context).settingsController.settings.directusUrl}/items/${MealModel.collectionName}',
       queryParameters: {'sort': '-available,name'},
     );
 
@@ -40,9 +41,9 @@ class MealRepository implements IMealRepository {
   }
 
   @override
-  Future<List<MealModel>> fetchByCategory(String categoryId) async {
+  Future<List<MealModel>> fetchByCategory(String categoryId, {required BuildContext context}) async {
     final response = await _directusClient.dio.get<Map<String, dynamic>>(
-      '${_directusClient.url}/items/${MealModel.collectionName}',
+      '${Dependencies.of(context).settingsController.settings.directusUrl}/items/${MealModel.collectionName}',
       queryParameters: {
         'filter': {
           'category': {'_eq': categoryId},
@@ -62,9 +63,9 @@ class MealRepository implements IMealRepository {
   }
 
   @override
-  Future<MealModel> fetchById(String id) async {
+  Future<MealModel> fetchById(String id, {required BuildContext context}) async {
     final response = await _directusClient.dio.get<Map<String, dynamic>>(
-      '${_directusClient.url}/items/${MealModel.collectionName}/$id',
+      '${Dependencies.of(context).settingsController.settings.directusUrl}/items/${MealModel.collectionName}/$id',
     );
 
     final data = response.data?['data'] as Map<String, dynamic>?;

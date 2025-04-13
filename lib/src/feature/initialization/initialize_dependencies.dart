@@ -11,6 +11,7 @@ import 'package:e_menu/src/feature/cart/data/cart_repository.dart';
 import 'package:e_menu/src/feature/menu/controller/meal_menu_controller.dart';
 import 'package:e_menu/src/feature/menu/repository/meal_category_repository.dart';
 import 'package:e_menu/src/feature/menu/repository/meal_repository.dart';
+import 'package:e_menu/src/feature/settings/controller/settings_controller.dart';
 import 'package:flutter/services.dart';
 import 'package:platform_info/platform_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -74,15 +75,14 @@ final Map<String, _InitializationStep> _initializationSteps = <String, _Initiali
   'Restore settings': (_) {},
   'Initialize shared preferences':
       (dependencies) async => dependencies.sharedPreferences = await SharedPreferences.getInstance(),
+  'SettingsController':
+      (dependencies) =>
+          dependencies.settingsController = SettingsController(sharedPreferences: dependencies.sharedPreferences)
+            ..loadSettings(),
   'Connect to database': (_) => {},
   'Shrink database': (_) => {},
   'Migrate app from previous version': (_) => {},
-  'API Client':
-      (dependencies) =>
-          dependencies.directusClient = DirectusClient(
-            directusUrl: 'http://localhost:8055',
-            preferences: dependencies.sharedPreferences,
-          ),
+  'API Client': (dependencies) => dependencies.directusClient = DirectusClient(),
   'Initialize repositories': (dependencies) {
     dependencies
       ..mealRepository = MealRepository(dependencies.directusClient)

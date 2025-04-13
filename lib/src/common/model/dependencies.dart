@@ -5,6 +5,7 @@ import 'package:e_menu/src/feature/cart/data/cart_repository.dart';
 import 'package:e_menu/src/feature/menu/controller/meal_menu_controller.dart';
 import 'package:e_menu/src/feature/menu/repository/meal_category_repository.dart';
 import 'package:e_menu/src/feature/menu/repository/meal_repository.dart';
+import 'package:e_menu/src/feature/settings/controller/settings_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -46,6 +47,9 @@ class Dependencies {
 
   /// Cart controller
   late final CartController cartController;
+
+  /// SettingsController
+  late final SettingsController settingsController;
 }
 
 /// {@template inherited_dependencies}

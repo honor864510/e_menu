@@ -50,3 +50,6 @@ app.*.map.json
 **.gr.dart
 **.gen.dart
 **.mocks.dart
+
+# FVM Version Cache
+.fvm/

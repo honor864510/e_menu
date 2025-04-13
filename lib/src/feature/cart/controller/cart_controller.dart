@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:e_menu/src/feature/cart/data/cart_repository.dart';
 import 'package:e_menu/src/feature/cart/model/cart_item_model.dart';
@@ -5,7 +7,9 @@ import 'package:e_menu/src/feature/menu/model/meal_model.dart';
 import 'package:flutter/foundation.dart';
 
 class CartController extends ChangeNotifier {
-  CartController(this._cartRepository);
+  CartController(this._cartRepository) {
+    unawaited(loadCart());
+  }
 
   final ICartRepository _cartRepository;
   List<CartItemModel> _items = [];
@@ -16,12 +20,12 @@ class CartController extends ChangeNotifier {
 
   double get totalPrice => _items.fold(0, (sum, item) => sum + (item.meal.price * item.quantity));
 
-  int get itemCount => _items.length;
+  int get itemCount => _items.fold(0, (previousValue, element) => previousValue + element.quantity);
 
   /// Checks if a meal is already in the cart
   bool containsMeal(MealModel meal) => _items.any((item) => item.meal.id == meal.id);
 
-  int getQuantity(MealModel meal) {
+  int quantityOf(MealModel meal) {
     final item = _items.firstWhereOrNull((item) => item.meal.id == meal.id);
     return item?.quantity ?? 0;
   }

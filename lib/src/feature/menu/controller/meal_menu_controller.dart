@@ -1,9 +1,8 @@
-import 'package:collection/collection.dart';
 import 'package:e_menu/src/feature/menu/model/meal_category_model.dart';
 import 'package:e_menu/src/feature/menu/model/meal_model.dart';
 import 'package:e_menu/src/feature/menu/repository/meal_category_repository.dart';
 import 'package:e_menu/src/feature/menu/repository/meal_repository.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 typedef MealCategoryTable = Map<MealCategoryModel, List<MealModel>>;
 
@@ -41,12 +40,12 @@ class MealMenuController extends ChangeNotifier {
   bool get isLoading => _isLoading;
 
   /// Fetches both meals and categories
-  Future<void> fetch() async {
+  Future<void> fetch(BuildContext context) async {
     _setLoading(true);
 
     try {
       // Fetch both in parallel
-      final results = await Future.wait([_mealRepository.fetch(), _categoryRepository.fetch()]);
+      final results = await Future.wait([_mealRepository.fetch(context), _categoryRepository.fetch(context)]);
 
       _meals = results[0] as List<MealModel>;
       _categories = results[1] as List<MealCategoryModel>;
@@ -57,7 +56,8 @@ class MealMenuController extends ChangeNotifier {
   }
 
   /// Gets a meal by its ID
-  Future<MealModel?> fetchMealById(String id) => _mealRepository.fetchById(id);
+  Future<MealModel?> fetchMealById(String id, {required BuildContext context}) =>
+      _mealRepository.fetchById(id, context: context);
 
   /// Sets the loading state and notifies listeners
   void _setLoading(bool value) {
@@ -66,5 +66,5 @@ class MealMenuController extends ChangeNotifier {
   }
 
   /// Refreshes all menu data
-  Future<void> refresh() => fetch();
+  Future<void> refresh(BuildContext context) => fetch(context);
 }
